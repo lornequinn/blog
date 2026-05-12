@@ -1,0 +1,27 @@
+vendor/
+node_modules/
+.env
+.env.backup
+.phpunit.result.cache
+.phpunit.cache/
+.phpstan.cache
+.phpstan-result.json
+/.idea
+/.vscode
+*.swp
+*.swo
+.DS_Store
+composer.lock
+
+# Claude operational files + internal docs (local only)
+# Public-facing user docs (README.md, package READMEs) stay tracked.
+# Anything internal — role/why/how/product, graph, spec, plans — stays local.
+CLAUDE.md
+.claude/
+docs/role.md
+docs/why.md
+docs/how.md
+docs/product.md
+docs/graph/
+docs/superpowers/
+docs/plans/

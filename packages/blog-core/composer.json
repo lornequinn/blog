@@ -27,7 +27,8 @@
     },
     "autoload": {
         "psr-4": {
-            "LorneQuinn\\Blog\\Core\\": "src/"
+            "LorneQuinn\\Blog\\Core\\": "src/",
+            "LorneQuinn\\Blog\\Core\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {

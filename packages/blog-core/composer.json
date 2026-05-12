@@ -1,0 +1,55 @@
+{
+    "name": "lornequinn/blog-core",
+    "description": "Core package for the LQ blog suite — Post, Tag, DataType registry, Component registry.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lorne Quinn",
+            "email": "lorne@lornequinn.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/lornequinn/blog/issues",
+        "source": "https://github.com/lornequinn/blog"
+    },
+    "require": {
+        "php": "^8.3",
+        "illuminate/support": "^12.0|^13.0",
+        "illuminate/database": "^12.0|^13.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0|^11.0",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-laravel": "^4.0",
+        "phpstan/phpstan": "^2.0",
+        "larastan/larastan": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "LorneQuinn\\Blog\\Core\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LorneQuinn\\Blog\\Core\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LorneQuinn\\Blog\\Core\\BlogCoreServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "pest"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

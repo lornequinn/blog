@@ -1,0 +1,65 @@
+{
+    "name": "lornequinn/blog-markdown",
+    "description": "Markdown body renderer for the LQ blog suite — CommonMark-backed pre-pass on the body pipeline.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lorne Quinn",
+            "email": "lorne@lornequinn.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/lornequinn/blog/issues",
+        "source": "https://github.com/lornequinn/blog"
+    },
+    "require": {
+        "php": "^8.3",
+        "illuminate/support": "^12.0|^13.0",
+        "league/commonmark": "^2.0",
+        "lornequinn/blog-core": "@dev"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0|^11.0",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-laravel": "^4.0",
+        "phpstan/phpstan": "^2.0",
+        "larastan/larastan": "^3.0"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../blog-core",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "LorneQuinn\\Blog\\Markdown\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LorneQuinn\\Blog\\Markdown\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LorneQuinn\\Blog\\Markdown\\BlogMarkdownServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "pest"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

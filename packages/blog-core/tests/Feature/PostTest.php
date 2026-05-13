@@ -48,6 +48,17 @@ it('casts published_at to a Carbon instance and status to the enum', function ()
     expect($post->published_at)->toBeInstanceOf(Carbon::class);
 });
 
+it('transitions through draft, scheduled, and published statuses', function () {
+    $post = Post::factory()->create();
+    expect($post->status)->toBe(PostStatus::Draft);
+
+    $post->update(['status' => PostStatus::Scheduled, 'published_at' => '2026-12-01 09:00:00']);
+    expect($post->refresh()->status)->toBe(PostStatus::Scheduled);
+
+    $post->update(['status' => PostStatus::Published]);
+    expect($post->refresh()->status)->toBe(PostStatus::Published);
+});
+
 it('attaches and detaches tags via the tags relationship', function () {
     $post = Post::factory()->create();
     $tag = Tag::factory()->create(['name' => 'php']);

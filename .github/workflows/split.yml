@@ -1,0 +1,68 @@
+name: Split Monorepo
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*/v*'
+
+jobs:
+  split_branch:
+    if: github.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - local_path: 'packages/blog-core'
+            repo_name: 'blog-core'
+          - local_path: 'packages/blog-markdown'
+            repo_name: 'blog-markdown'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Split ${{ matrix.package.repo_name }}
+        uses: symplify/monorepo-split-github-action@v2.3.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.SPLIT_TOKEN }}
+        with:
+          package_directory: ${{ matrix.package.local_path }}
+          repository_organization: 'lornequinn'
+          repository_name: ${{ matrix.package.repo_name }}
+          user_name: 'Lorne Quinn'
+          user_email: 'lorne@lornequinn.com'
+
+  split_tag:
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Parse tag
+        id: tag
+        run: |
+          # Tag format: <package>/v<version> e.g. blog-core/v0.1.0
+          TAG="${GITHUB_REF_NAME}"
+          PACKAGE="${TAG%%/*}"
+          VERSION="${TAG#*/}"
+          echo "package=${PACKAGE}" >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Splitting ${PACKAGE} at ${VERSION}"
+
+      - name: Split ${{ steps.tag.outputs.package }} (${{ steps.tag.outputs.version }})
+        uses: symplify/monorepo-split-github-action@v2.3.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.SPLIT_TOKEN }}
+        with:
+          package_directory: 'packages/${{ steps.tag.outputs.package }}'
+          repository_organization: 'lornequinn'
+          repository_name: ${{ steps.tag.outputs.package }}
+          user_name: 'Lorne Quinn'
+          user_email: 'lorne@lornequinn.com'
+          tag: ${{ steps.tag.outputs.version }}

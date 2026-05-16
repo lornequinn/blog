@@ -95,7 +95,46 @@ class FinishingTable extends Component
 app(ComponentRegistry::class)->register(new FinishingTable());
 ```
 
-Once registered, the renderer (provided by `lornequinn/blog-markdown` once it lands) will resolve `[[finishing-table]]` shortcodes in a Post body to the matching Component bound against the Post's attached DataType records.
+Once registered, the renderer resolves `[[finishing-table]]` shortcodes in a Post body to the matching Component bound against the Post's attached DataType records.
+
+### `ShortcodeParser`
+
+Resolves `[[name attr=value]]` tokens in Post bodies. Names are kebab-case-lowercase. Attribute values can be bare (`a=1`), double-quoted (`a="hello world"`), or single-quoted (`a='single'`). Escape a literal token with a leading backslash: `\[[demo]]` renders as `[[demo]]`. Malformed tokens pass through unchanged.
+
+The parser is wired into the `BodyPipeline` at priority 0 (runs first) by `BlogCoreServiceProvider`. Its resolver looks up Components in the `ComponentRegistry` and renders their Blade views with the parsed attributes as view data.
+
+### `BodyPipeline`
+
+Ordered chain of body renderers. Each renderer is `(string): string`. Register in your service provider:
+
+```php
+use LorneQuinn\Blog\Core\Rendering\BodyPipeline;
+
+app(BodyPipeline::class)->register(function (string $body): string {
+    return strtoupper($body); // contrived
+}, priority: 50);
+```
+
+Lower priority runs earlier. Default priority is 0. Within the same priority, registration order is preserved.
+
+Standard pipeline composition (with `lornequinn/blog-markdown` installed):
+
+| Priority | Renderer | Notes |
+|----------|----------|-------|
+| 0 | `ShortcodeParser` | Resolves `[[…]]` tokens to rendered Component HTML |
+| 100 | `MarkdownRenderer` (from `blog-markdown`) | Markdown → HTML, with `html_input='allow'` so resolved HTML survives |
+
+### Route + view
+
+`blog-core` registers `GET /posts/{slug}` → `PostController@show`, named `blog.posts.show`. The controller filters to `PostStatus::Published` with `published_at <= now()`, eager-loads `tags`, runs `body` through the `BodyPipeline`, and renders `blog-core::posts.show`.
+
+Override the view by publishing it:
+
+```bash
+php artisan vendor:publish --tag=blog-core-views
+```
+
+It lands at `resources/views/vendor/blog-core/posts/show.blade.php`.
 
 ### `PostDataLink`
 

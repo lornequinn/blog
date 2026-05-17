@@ -1,0 +1,91 @@
+version: 2
+
+updates:
+  # GitHub Actions across the whole repo (ci.yml, split.yml).
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Australia/Sydney
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci"
+
+  # Root composer.json — only laravel/pint at present.
+  - package-ecosystem: composer
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Australia/Sydney
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      dev:
+        applies-to: version-updates
+        dependency-type: development
+
+  # blog-core composer.json.
+  - package-ecosystem: composer
+    directory: /packages/blog-core
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Australia/Sydney
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+      include: scope
+    groups:
+      runtime:
+        applies-to: version-updates
+        dependency-type: production
+      dev:
+        applies-to: version-updates
+        dependency-type: development
+
+  # blog-markdown composer.json.
+  - package-ecosystem: composer
+    directory: /packages/blog-markdown
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Australia/Sydney
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+      include: scope
+    groups:
+      runtime:
+        applies-to: version-updates
+        dependency-type: production
+      dev:
+        applies-to: version-updates
+        dependency-type: development
+
+  # blog-mcp composer.json. laravel/mcp is pre-1.0 (^0.7) — minor bumps
+  # require a manual PR review; caret on 0.x doesn't pick up 0.8.x.
+  - package-ecosystem: composer
+    directory: /packages/blog-mcp
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Australia/Sydney
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+      include: scope
+    groups:
+      runtime:
+        applies-to: version-updates
+        dependency-type: production
+      dev:
+        applies-to: version-updates
+        dependency-type: development

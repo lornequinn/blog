@@ -19,6 +19,8 @@ jobs:
             repo_name: 'blog-core'
           - local_path: 'packages/blog-markdown'
             repo_name: 'blog-markdown'
+          - local_path: 'packages/blog-mcp'
+            repo_name: 'blog-mcp'
 
     steps:
       - uses: actions/checkout@v4

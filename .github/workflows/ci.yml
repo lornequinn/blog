@@ -30,10 +30,12 @@ jobs:
       fail-fast: false
       matrix:
         php: ['8.3', '8.4']
-        # Packages populate as they land. blog-core in Phase 0 CP 12, blog-markdown in Phase 1 CP 28.
+        # Packages populate as they land. blog-core in Phase 0 CP 12, blog-markdown in Phase 1 CP 28,
+        # blog-mcp in Phase 2.
         package:
           - blog-core
           - blog-markdown
+          - blog-mcp
     defaults:
       run:
         working-directory: packages/${{ matrix.package }}

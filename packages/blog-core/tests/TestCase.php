@@ -6,13 +6,14 @@ namespace LorneQuinn\Blog\Core\Tests;
 
 use Illuminate\Foundation\Application;
 use LorneQuinn\Blog\Core\BlogCoreServiceProvider;
+use LorneQuinn\Blog\Core\Tests\Fixtures\TestViewsServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
     protected function getPackageProviders($app): array
     {
-        return [BlogCoreServiceProvider::class];
+        return [BlogCoreServiceProvider::class, TestViewsServiceProvider::class];
     }
 
     protected function defineEnvironment($app): void

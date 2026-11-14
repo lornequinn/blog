@@ -19,7 +19,11 @@ abstract class Component
     /** Name of the DataType this Component consumes. */
     abstract public function dataType(): string;
 
-    /** Blade view path that renders this Component. */
+    /**
+     * Blade view path that renders this Component.
+     *
+     * @return view-string
+     */
     abstract public function view(): string;
 
     /**

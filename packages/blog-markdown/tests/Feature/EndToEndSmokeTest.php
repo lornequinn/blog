@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\View;
 use LorneQuinn\Blog\Core\Component\Component;
 use LorneQuinn\Blog\Core\Component\ComponentRegistry;
 use LorneQuinn\Blog\Core\Enums\PostStatus;
@@ -13,10 +12,12 @@ use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
+/** @param view-string $view */
 function registerStubComponent(string $name, string $view): void
 {
     $stub = new class($name, $view) extends Component
     {
+        /** @param view-string $stubView */
         public function __construct(
             private readonly string $stubName,
             private readonly string $stubView,
@@ -39,7 +40,6 @@ function registerStubComponent(string $name, string $view): void
     };
 
     app(ComponentRegistry::class)->register($stub);
-    View::addNamespace('smoke-test', __DIR__.'/stubs/views');
 }
 
 it('renders a Post with both markdown body and shortcode resolution end-to-end', function () {

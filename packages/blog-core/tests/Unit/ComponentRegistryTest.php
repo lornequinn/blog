@@ -5,14 +5,13 @@ declare(strict_types=1);
 use LorneQuinn\Blog\Core\Component\Component;
 use LorneQuinn\Blog\Core\Component\ComponentRegistry;
 
-function makeComponent(string $name, string $dataType, string $view = 'test.view'): Component
+function makeComponent(string $name, string $dataType): Component
 {
-    return new class($name, $dataType, $view) extends Component
+    return new class($name, $dataType) extends Component
     {
         public function __construct(
             private readonly string $n,
             private readonly string $dt,
-            private readonly string $v,
         ) {}
 
         public function name(): string
@@ -27,7 +26,7 @@ function makeComponent(string $name, string $dataType, string $view = 'test.view
 
         public function view(): string
         {
-            return $this->v;
+            return 'blog-core-test::demo';
         }
     };
 }

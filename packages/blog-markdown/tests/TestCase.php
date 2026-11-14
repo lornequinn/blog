@@ -7,6 +7,7 @@ namespace LorneQuinn\Blog\Markdown\Tests;
 use Illuminate\Foundation\Application;
 use LorneQuinn\Blog\Core\BlogCoreServiceProvider;
 use LorneQuinn\Blog\Markdown\BlogMarkdownServiceProvider;
+use LorneQuinn\Blog\Markdown\Tests\Fixtures\TestViewsServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
@@ -16,6 +17,7 @@ abstract class TestCase extends Orchestra
         return [
             BlogCoreServiceProvider::class,
             BlogMarkdownServiceProvider::class,
+            TestViewsServiceProvider::class,
         ];
     }
 

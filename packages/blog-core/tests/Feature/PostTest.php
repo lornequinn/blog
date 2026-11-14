@@ -65,7 +65,7 @@ it('attaches and detaches tags via the tags relationship', function () {
 
     $post->tags()->attach($tag);
     expect($post->tags()->count())->toBe(1);
-    expect($post->tags->first()->name)->toBe('php');
+    expect($post->tags->pluck('name')->all())->toBe(['php']);
 
     $post->tags()->detach($tag);
     expect($post->tags()->count())->toBe(0);

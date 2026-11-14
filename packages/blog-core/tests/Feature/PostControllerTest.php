@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\View;
 use LorneQuinn\Blog\Core\Component\Component;
 use LorneQuinn\Blog\Core\Component\ComponentRegistry;
 use LorneQuinn\Blog\Core\Enums\PostStatus;
@@ -86,12 +85,6 @@ it('resolves a registered shortcode through the wired-up parser', function () {
         }
     };
     $registry->register($stub);
-
-    // Register an inline view source so the component has something to render.
-    View::addNamespace(
-        'blog-core-test',
-        __DIR__.'/stubs/views',
-    );
 
     $post = Post::factory()->create([
         'title' => 'Shortcode Test',

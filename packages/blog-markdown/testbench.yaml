@@ -1,0 +1,4 @@
+providers:
+  - LorneQuinn\Blog\Core\BlogCoreServiceProvider
+  - LorneQuinn\Blog\Markdown\BlogMarkdownServiceProvider
+  - LorneQuinn\Blog\Markdown\Tests\Fixtures\TestViewsServiceProvider

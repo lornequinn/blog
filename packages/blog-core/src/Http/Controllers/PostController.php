@@ -26,7 +26,11 @@ final class PostController extends Controller
 
         $renderedBody = $pipeline->run((string) ($post->body ?? ''));
 
-        return ViewFactory::make('blog-core::posts.show', [
+        $view = config('blog-core.layout') === null
+            ? 'blog-core::posts.show'
+            : 'blog-core::posts.show-in-layout';
+
+        return ViewFactory::make($view, [
             'post' => $post,
             'renderedBody' => $renderedBody,
         ]);

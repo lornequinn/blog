@@ -6,11 +6,6 @@
     <title>{{ $post->title }}</title>
 </head>
 <body>
-    <article>
-        <h1>{{ $post->title }}</h1>
-        <div class="post-body">
-            {!! $renderedBody !!}
-        </div>
-    </article>
+    @include('blog-core::posts._article')
 </body>
 </html>

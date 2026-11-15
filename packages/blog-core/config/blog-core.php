@@ -30,4 +30,20 @@ return [
         'published',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Post page layout
+    |--------------------------------------------------------------------------
+    |
+    | null renders the post as a standalone HTML page. Set a Blade layout
+    | (e.g. 'layouts.app') to render the post inside your site's layout:
+    | the article is placed in `layout_section` and the post title in a
+    | 'title' section. Override the view entirely with
+    | `vendor:publish --tag=blog-core-views` if you need more control.
+    |
+    */
+    'layout' => null,
+
+    'layout_section' => 'content',
+
 ];

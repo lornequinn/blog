@@ -28,6 +28,57 @@ it('renders a published post on GET /posts/{slug}', function () {
     $response->assertSee('A simple body.', false);
 });
 
+it('renders a standalone page when no layout is configured', function () {
+    $post = Post::factory()->create([
+        'title' => 'Standalone',
+        'body' => 'Body.',
+        'status' => PostStatus::Published,
+        'published_at' => now()->subDay(),
+    ]);
+
+    get("/posts/{$post->slug}")
+        ->assertOk()
+        ->assertSee('<!doctype html>', false)
+        ->assertDontSee('consumer-layout', false);
+});
+
+it('renders inside the consumer layout when one is configured', function () {
+    config(['blog-core.layout' => 'blog-core-test::layout']);
+
+    $post = Post::factory()->create([
+        'title' => 'In Layout',
+        'body' => 'Wrapped **body**.',
+        'status' => PostStatus::Published,
+        'published_at' => now()->subDay(),
+    ]);
+
+    get("/posts/{$post->slug}")
+        ->assertOk()
+        ->assertSee('<div id="consumer-layout">', false)
+        ->assertSee('<title>In Layout</title>', false)
+        ->assertSee('<h1>In Layout</h1>', false)
+        ->assertSee('Wrapped', false)
+        ->assertDontSee('<!doctype html>', false);
+});
+
+it('yields into the configured layout section', function () {
+    config([
+        'blog-core.layout' => 'blog-core-test::main-layout',
+        'blog-core.layout_section' => 'main',
+    ]);
+
+    $post = Post::factory()->create([
+        'title' => 'Custom Section',
+        'status' => PostStatus::Published,
+        'published_at' => now()->subDay(),
+    ]);
+
+    get("/posts/{$post->slug}")
+        ->assertOk()
+        ->assertSee('<div id="consumer-main-layout">', false)
+        ->assertSee('<h1>Custom Section</h1>', false);
+});
+
 it('returns 404 for a draft post', function () {
     $post = Post::factory()->create([
         'status' => PostStatus::Draft,

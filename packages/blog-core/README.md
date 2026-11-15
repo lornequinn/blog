@@ -126,15 +126,24 @@ Standard pipeline composition (with `lornequinn/blog-markdown` installed):
 
 ### Route + view
 
-`blog-core` registers `GET /posts/{slug}` → `PostController@show`, named `blog.posts.show`. The controller filters to `PostStatus::Published` with `published_at <= now()`, eager-loads `tags`, runs `body` through the `BodyPipeline`, and renders `blog-core::posts.show`.
+`blog-core` registers `GET /posts/{slug}` → `PostController@show`, named `blog.posts.show`. The controller filters to `PostStatus::Published` with `published_at <= now()`, eager-loads `tags`, runs `body` through the `BodyPipeline`, and renders the post. The package ships no index or listing page: your site writes its own homepage and lists.
 
-Override the view by publishing it:
+**Render inside your site's layout.** By default the post is a standalone HTML page. Point it at your layout in `config/blog-core.php`:
+
+```php
+'layout' => 'layouts.app',       // any Blade layout using @yield
+'layout_section' => 'content',   // the section the article goes into
+```
+
+The article is placed in `layout_section`, and the post title goes in a `title` section (`@yield('title')`).
+
+**Or take full control** by publishing the views:
 
 ```bash
 php artisan vendor:publish --tag=blog-core-views
 ```
 
-It lands at `resources/views/vendor/blog-core/posts/show.blade.php`.
+They land in `resources/views/vendor/blog-core/posts/`: `show.blade.php` (standalone), `show-in-layout.blade.php` (layout mode), and `_article.blade.php` (the article markup both of them include).
 
 ### `PostDataLink`
 
